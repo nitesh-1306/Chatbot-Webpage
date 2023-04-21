@@ -4,11 +4,11 @@ const msgerChat = document.querySelector(".msger-chat");
 let typing = document.getElementById("typingstatus")
 
 const BOT_MSGS = [
-  "Hi, how are you?",
-  "Ohh... I can't understand what you trying to say. Sorry!",
-  "I like to play games... But I don't know how to play!",
-  "Sorry if my answers are not relevant. :))",
-  "I feel sleepy! :("
+  "To enable real-time chat with our AI model, please run the program locally and execute it with an API. This is a sample predecided reply.",
+  "In order to chat with our AI model in real-time, you will need to run the program locally and execute it using an API. This message is a predecided reply.",
+  "To experience our AI model in action and chat with it in real-time, run the program locally and execute it with an API. This is a predecided response.",
+  "For real-time chat with our AI model, it's necessary to run the program locally and execute it using an API. This message is a sample predecided reply.",
+  "To access our AI chatbot and engage in real-time conversation, please run the program locally and execute it with an API. This is a predecided response."
 ];
 
 
@@ -50,7 +50,7 @@ function appendMessage(name, img, side, text, log, time = formatDate(new Date())
   msgerChat.scrollTop += 500;
 
   if (log) {
-    console.log("Logged : "+log)
+    console.log("Logged : " + log)
     const chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
     chatHistory.push(message);
     localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
@@ -59,17 +59,18 @@ function appendMessage(name, img, side, text, log, time = formatDate(new Date())
 
 function botResponse(message) {
 
-  send(message)
+  // When executing it locally, uncomment the following function code
+  // send(message)
 
+  //Comment out the whole below section until the end of the function when running locally
+  const r = random(0, BOT_MSGS.length - 1);
+  const msgText = BOT_MSGS[r];
+  const delay = msgText.split(" ").length * 100;
+  setTimeout(() => {
+    appendMessage(BOT_NAME, BOT_IMG, "left", msgText,false);
+    typing.innerText = "";
+  }, delay);
 
-  // const r = random(0, BOT_MSGS.length - 1);
-  // const msgText = BOT_MSGS[r];
-  // const delay = msgText.split(" ").length * 100;
-  // setTimeout(() => {
-  //   appendMessage(BOT_NAME, BOT_IMG, "left", msgText,false);
-  //   typing.innerText = "";
-  // }, delay);
-  
 }
 
 function formatDate(date) {
@@ -102,7 +103,7 @@ window.addEventListener('load', () => {
   console.log(chatHistory);
 });
 
-function clearChat(){
+function clearChat() {
   localStorage.removeItem('chatHistory');
   location.reload();
 }
@@ -117,19 +118,19 @@ function send(message) {
     },
     body: JSON.stringify({ message: message })
   })
-  .then(response => response.json())
-  .then(data => {
-    const msgText = data.message;
-    typing.innerText = "";
-    appendMessage(BOT_NAME, BOT_IMG, "left", msgText, true);
-  })
-  .catch(error => {
-    console.error('Error fetching bot response:', error);
-  });
+    .then(response => response.json())
+    .then(data => {
+      const msgText = data.message;
+      typing.innerText = "";
+      appendMessage(BOT_NAME, BOT_IMG, "left", msgText, true);
+    })
+    .catch(error => {
+      console.error('Error fetching bot response:', error);
+    });
 }
 
 
-document.addEventListener("keydown", function(event) {
+document.addEventListener("keydown", function (event) {
   if (event.code === "Slash" && !event.shiftKey && !event.ctrlKey && !event.altKey && !event.metaKey) {
     event.preventDefault();
     msgerInput.focus();
