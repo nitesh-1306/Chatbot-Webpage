@@ -33,7 +33,7 @@ function appendMessage(name, img, side, text, log, time = formatDate(new Date())
   const message = { name, img, side, text, time };
   const msgHTML = `
     <div class="msg ${side}-msg">
-      <div class="msg-img" style="background-image: url('/assets/${img}')"></div>
+      <div class="msg-img" style="background-image: url('assets/${img}')"></div>
 
       <div class="msg-bubble">
         <div class="msg-info">
